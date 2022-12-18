@@ -9,3 +9,5 @@ app.MapGet("/leaderboard", () =>
 app.MapPost("/score/{id}/{radeks}", (string id, float radeks) => leaderboard[id] = radeks);
 
 app.MapGet("/nameused/{id}", (string id) => leaderboard.Keys.Contains(id));    
+
+app.Run();
