@@ -2,9 +2,18 @@ using HashidsNet;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RadekClickerServer;
+using Serilog;
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<PlayerDb>(c => c.UseSqlite("Data Source=db/radek.db"));
+
+var logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("logs/log.txt", LogEventLevel.Warning)
+    .CreateLogger();
+Log.Logger = logger;
+builder.Logging.ClearProviders().AddSerilog(logger);
 
 var app = builder.Build();
 
