@@ -7,7 +7,7 @@ using RadekClickerServer;
 const string ADMIN_SECRET = "5976d3b4f49f6ae9d20edef64dfbbcee34452d3e";
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<PlayerDb>(c => c.UseSqlite("Data Source=radek.db"));
+builder.Services.AddDbContext<PlayerDb>(c => c.UseSqlite("Data Source=db/radek.db"));
 
 var app = builder.Build();
 

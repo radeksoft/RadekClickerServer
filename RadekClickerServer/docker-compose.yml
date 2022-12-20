@@ -1,0 +1,8 @@
+version: "3.9"
+services:
+  radek-server:
+    build: .
+    ports:
+      - "8081:80"
+    volumes:
+      - ./db:/data/radek-db
