@@ -5,4 +5,4 @@ services:
     ports:
       - "8081:80"
     volumes:
-      - ./db:/data/radek-db
+      - db:/data/radek-db
