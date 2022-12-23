@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<PlayerDb>(c => c.UseSqlite("Data Source=db/radek.db"));
 
 var logger = new LoggerConfiguration()
-    .WriteTo.Console()
+    .WriteTo.Console(builder.Environment.IsDevelopment() ? LogEventLevel.Information : LogEventLevel.Warning)
     .WriteTo.File("logs/log.txt", LogEventLevel.Warning)
     .CreateLogger();
 Log.Logger = logger;
