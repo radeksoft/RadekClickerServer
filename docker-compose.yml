@@ -1,6 +1,7 @@
 version: "3.9"
 services:
   radek-server:
+    restart: always
     build: .
     ports:
       - "8081:80"
