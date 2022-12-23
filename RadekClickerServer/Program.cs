@@ -61,14 +61,22 @@ app.MapPut("/removeplayer/{secret}/{id:int}", async ([FromServices] PlayerDb db,
 
 app.MapPut("/updateradeks/{token}/{radeks}", async ([FromServices] PlayerDb db, string token, float radeks) =>
 {
-    var player = db.Players.SingleOrDefault(x => x.Id == hashids.DecodeSingle(token.ToUpper()));
-    if (player == null)
+    try
+    {
+        var player = db.Players.SingleOrDefault(x => x.Id == hashids.DecodeSingle(token.ToUpper()));
+        
+        if (player == null)
+            return Results.Unauthorized();
+
+        player.Radeks = radeks;
+        await db.SaveChangesAsync();
+
+        return Results.Ok(db.Players.OrderByDescending(x => x.Radeks));
+    }
+    catch (NoResultException e)
+    {
         return Results.Unauthorized();
-
-    player.Radeks = radeks;
-    await db.SaveChangesAsync();
-
-    return Results.Ok(db.Players.OrderByDescending(x => x.Radeks));
+    }
 });
 
 app.Run();
