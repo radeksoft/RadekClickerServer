@@ -68,7 +68,7 @@ app.MapPut("/updateradeks/{token}/{radeks}", async ([FromServices] PlayerDb db, 
     player.Radeks = radeks;
     await db.SaveChangesAsync();
 
-    return Results.Ok();
+    return Results.Ok(db.Players.OrderByDescending(x => x.Radeks));
 });
 
 app.Run();
