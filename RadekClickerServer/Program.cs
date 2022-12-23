@@ -73,7 +73,7 @@ app.MapPut("/updateradeks/{token}/{radeks}", async ([FromServices] PlayerDb db, 
 
         return Results.Ok(db.Players.OrderByDescending(x => x.Radeks));
     }
-    catch (NoResultException e)
+    catch (InvalidOperationException e)
     {
         return Results.Unauthorized();
     }
