@@ -18,7 +18,7 @@ builder.Logging.ClearProviders().AddSerilog(logger);
 var app = builder.Build();
 
 // random hash idk
-var hashids = new Hashids(app.Configuration.GetValue("hashSalt", ""), 6, "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
+var hashids = new Hashids(app.Configuration.GetValue("hashSalt", ""), 6, "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 
 app.MapGet("/leaderboard", ([FromServices]PlayerDb db) =>
     db.Players.OrderByDescending(x => x.Radeks));
