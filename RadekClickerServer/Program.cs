@@ -23,8 +23,19 @@ var hashids = new Hashids(app.Configuration.GetValue("hashSalt", ""), 6, "ABCDEF
 app.MapGet("/leaderboard", ([FromServices]PlayerDb db) =>
     db.Players.OrderByDescending(x => x.Radeks));
 
-app.MapGet("/gethash/{secret}/{id:int}", ([FromServices]IConfiguration cf, string secret, int id) => 
-    secret != cf.GetValue("adminSecret", "") ? Results.Unauthorized() : Results.Ok(hashids.Encode(id)));
+app.MapGet("/gethash/{secret}/{name}", ([FromServices]IConfiguration cf, [FromServices]PlayerDb db, string secret, string name) => 
+{
+    if (secret != cf.GetValue("adminSecret", ""))
+        return Results.Unauthorized();
+
+    var player = db.Players.FirstOrDefault(x => x.DisplayName == name);
+
+    if (player == null)
+        return Results.NotFound();
+
+    return Results.Ok(hashids.Encode(player.Id));
+});
+    
 
 app.MapPut("/newplayer/{secret}/{name}", async ([FromServices]PlayerDb db, [FromServices]IConfiguration cf, string secret, string name) =>
 {
@@ -47,9 +58,13 @@ app.MapPut("/newplayer/{secret}/{name}", async ([FromServices]PlayerDb db, [From
     return Results.Ok(hashids.Encode(player.Id));
 });
 
-app.MapPut("/removeplayer/{secret}/{id:int}", async ([FromServices] PlayerDb db, string secret, int id) =>
+app.MapPut("/removeplayer/{secret}/{name}", async ([FromServices] PlayerDb db, [FromServices]IConfiguration cf, string secret, string name) =>
 {
-    var player = db.Players.SingleOrDefault(x => x.Id == id);
+    var player = db.Players.SingleOrDefault(x => x.DisplayName == name);
+
+    if (secret != cf.GetValue("adminSecret", ""))
+        return Results.Unauthorized();
+
     if (player == null)
         return Results.NotFound();
 
@@ -73,7 +88,7 @@ app.MapPut("/updateradeks/{token}/{radeks}", async ([FromServices] PlayerDb db, 
 
         return Results.Ok(db.Players.OrderByDescending(x => x.Radeks));
     }
-    catch (InvalidOperationException e)
+    catch (InvalidOperationException)
     {
         return Results.Unauthorized();
     }

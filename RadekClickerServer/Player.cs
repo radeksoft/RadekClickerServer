@@ -8,7 +8,7 @@ public class Player
 {
     [Key] [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
-    public string DisplayName { get; set; }
+    public string? DisplayName { get; set; }
     public float Radeks { get; set; }
 }
 
