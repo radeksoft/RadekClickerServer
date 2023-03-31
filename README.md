@@ -1,6 +1,6 @@
 # Radekclicker server
 
-Tento repozitář obsahuje jednoduchý server pro [https://github.com/radeksoft/radekclicker2-solid](Radekclicker).
+Tento repozitář obsahuje jednoduchý server pro [Radekclicker](https://github.com/radeksoft/radekclicker2-solid).
 
 ## Spuštení
 
